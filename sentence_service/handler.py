@@ -30,9 +30,10 @@ class SessionMessageHandler:
 
     def handle_transcript(self, data, websocket):
         session_id = data.get('sessionId')
-        text = data.get("text", "")
+        transcript = data.get("transcript", "")
 
-        if not session_id or not text:
+        if not session_id or not transcript:
             print('텍스트 누락')
             return
-        self.queue_manager.add_text(websocket, session_id, text)
+
+        self.queue_manager.add_transcript(websocket, session_id, transcript)
