@@ -49,7 +49,7 @@ class SentenceQueueManager:
     def extract_and_queue_sentences(self, websocket, session_id: str):
         try:
             buffer_trasncript = str(self.buffer[session_id]).strip()
-            sentences = kss.split_sentences(buffer_trasncript)
+            sentences = kss.split_sentences(buffer_trasncript, backend=None)
 
             if not sentences:
                 return []
