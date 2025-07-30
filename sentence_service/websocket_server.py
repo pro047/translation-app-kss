@@ -4,7 +4,7 @@ import websockets
 from .handler import SessionMessageHandler
 
 
-NODE_WS_URL = "ws://127.0.0.1:5001/ws/python"
+NODE_WS_URL = "wss://neemba-stt-backend.onrender.com/ws/python"
 
 handler = SessionMessageHandler()
 connected_clients = set()
@@ -45,7 +45,7 @@ async def start_websocket_server():
         print('websocket client connected')
 
     async def server():
-        async with websockets.serve(handle_connection, '127.0.0.1', 8765, ping_interval=30, ping_timeout=10):
+        async with websockets.serve(handle_connection, '0.0.0.0', 8765, ping_interval=30, ping_timeout=10):
             print('WebSocket 서버 준비 완료')
             _ready_event.set()
             await asyncio.Future()
