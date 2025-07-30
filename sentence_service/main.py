@@ -1,15 +1,26 @@
-from fastapi import FastAPI
-from contextlib import asynccontextmanager
-import asyncio
-from .websocket_server import start_websocket_server, wait_for_websocket_ready
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from handler import SessionMessageHandler
+import json
+
+app = FastAPI()
+handler = SessionMessageHandler()
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    print("🟢 FastAPI 시작")
-    task = asyncio.create_task(start_websocket_server())
-    await wait_for_websocket_ready()
-    yield
-    print('🔴 FasetAPI 종료')
+@app.get('/')
+async def health_check():
+    return {'status': 'ok'}
 
-app = FastAPI(lifespan=lifespan)
+
+@app.websocket('/ws/python')
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        while True:
+            msg = await websocket.receive_text()
+            data = json.loads(msg)
+            handler.handle_message(data, websocket)
+
+    except WebSocketDisconnect:
+        print('connect close')
+    except Exception as e:
+        print('websocket error :', e)

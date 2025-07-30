@@ -1,6 +1,5 @@
 import asyncio
 import json
-import websockets
 from .handler import SessionMessageHandler
 
 
@@ -38,21 +37,3 @@ async def receive_text(websocket):
 
         except Exception as e:
             print('receive data error :', e)
-
-
-async def start_websocket_server():
-    async def handler(ws, path):
-        print('websocket client connected')
-
-    async def server():
-        async with websockets.serve(handle_connection, '0.0.0.0', 8765, ping_interval=30, ping_timeout=10):
-            print('WebSocket 서버 준비 완료')
-            _ready_event.set()
-            await asyncio.Future()
-
-        print('python websocket 서버 실행 중 (ws://localhost:8765)')
-    await server()
-
-
-async def wait_for_websocket_ready():
-    await _ready_event.wait()
