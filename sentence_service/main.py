@@ -1,5 +1,5 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from handler import SessionMessageHandler
+from .handler import SessionMessageHandler
 import json
 
 app = FastAPI()
