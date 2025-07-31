@@ -2,9 +2,6 @@ import asyncio
 import json
 from .handler import SessionMessageHandler
 
-
-NODE_WS_URL = "wss://neemba-stt-backend.onrender.com/ws/python"
-
 handler = SessionMessageHandler()
 connected_clients = set()
 
